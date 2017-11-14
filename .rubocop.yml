@@ -1,0 +1,39 @@
+AllCops:
+  TargetRubyVersion:
+    2.4
+  DisplayCopNames: true
+  # DisabledByDefault: true
+  Exclude:
+    - Guardfile
+    - Gemfile
+    - Gemfile.lock
+
+Documentation:
+  Enabled: false
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/BlockLength:
+  Enabled: false
+
+Style/AsciiIdentifiers:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/DefWithParentheses:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 100
+
+Style/BlockDelimiters:
+  Enabled: false
+
+StringLiterals:
+  Enabled: false
+
+Style/AlignParameters:
+  Enabled: false
