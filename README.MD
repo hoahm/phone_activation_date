@@ -10,6 +10,13 @@ Find the actual activation date of phone number.
 
 ## Ruby
 
+Generate sample test data to './output.csv'
+
+    require './generator'
+    Generator.new(1000000).run
+
+Extract the activation date    
+    
     require './phone_activation'
     input = 'input.csv'
     output = 'output.csv'
