@@ -1,5 +1,8 @@
 require './phone_activation'
+require 'benchmark'
 
-input = ARGV[0]
-output = ARGV[1]
-PhoneActivation.new(input, output).run
+puts Benchmark.measure {
+  input = ARGV[0]
+  output = ARGV[1]
+  PhoneActivation.new(input, output).run
+}
