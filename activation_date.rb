@@ -30,7 +30,7 @@ class ActivationDate
   attr_reader :my_arr
 
   def length
-    my_arr.count
+    @length ||= my_arr.count
   end
 
   def my_sorted_arr

@@ -55,29 +55,60 @@ class PhoneActivation
   end
 
   def push_data(row)
-    setter = row.to_hash
+    # setter = row.to_hash
 
-    phone = setter['PHONE_NUMBER']
-    activation_date = to_date(setter['ACTIVATION_DATE'])
-    deactivation_date = to_date(setter['DEACTIVATION_DATE'])
+    # phone = setter['PHONE_NUMBER']
+    # activation_date = to_date(setter['ACTIVATION_DATE'])
+    # deactivation_date = to_date(setter['DEACTIVATION_DATE'])
+    # # phone = setter[:p]
+    # # activation_date = to_date(setter[:a])
+    # # deactivation_date = to_date(setter[:d])
 
-    my_array[phone] = [] if my_array[phone].nil?
-    my_array[phone] << { activation_date: activation_date,
-                         deactivation_date: deactivation_date }
+    # my_array[phone] = [] if my_array[phone].nil?
+    # my_array[phone] << { activation_date: activation_date,
+    #                      deactivation_date: deactivation_date }
+
+    my_array[row[0]] = [] if my_array[row[0]].nil?
+    my_array[row[0]] << { activation_date: to_date(row[1]),
+                         deactivation_date: to_date(row[2]) }
   end
 
   def load_data
-    openner.read do |row|
-      push_data(row)
+    # headers = [:p,:a,:d]
+    File.open(input, 'r') do |file|
+      # headers = file.first
+      file.first
+
+      # csv = CSV.new(file)
+      # while row = csv.shift
+      #   push_data(row)
+      # end
+
+      Thread.new do
+        file.lazy.each_slice(100000) do |lines|
+          csv = CSV.new(lines.join)
+          while row = csv.shift
+            push_data(row)
+          end
+        end
+      end.join
     end
+    # openner.read do |row|
+    #   push_data(row)
+    # end
   end
 
   def execute
     exporter.run do |csv_obj|
-      my_array.each do |phone, data|
-        activation_date = ActivationDate.new(data).find
-        csv_obj << [phone, activation_date]
+      while el = my_array.shift
+        activation_date = ActivationDate.new(el[1]).find
+        csv_obj << [el[0], activation_date]
       end
+
+      # my_array.each do |phone, data|
+      #   activation_date = ActivationDate.new(data).find
+      #   csv_obj << [phone, activation_date]
+      # end
     end
   end
 end
