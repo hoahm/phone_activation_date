@@ -1,4 +1,4 @@
-Dir['../**/*.rb'].each { |f| require f }
+Dir['../*.rb', './**/*.rb'].each { |f| require f }
 
 RSpec.configure do |config|
   config.after(:all) do
